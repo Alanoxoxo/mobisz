@@ -1,3 +1,31 @@
+// Add event listener for beforeinstallprompt event
+self.addEventListener('beforeinstallprompt', (event) => {
+    // Prevent the default behavior
+    event.preventDefault();
+    // Store the event object for later use
+    deferredPrompt = event;
+    // Show a custom install button or other UI element
+    showInstallButton();
+});
 
-<!-- saved from url=(0011)about:blank -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>window.__CF$cv$params={r:'8e7d8cc9aa22c351',t:'MTczMjQ5NDgzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='../../cdn-cgi/challenge-platform/scripts/jsd/main.html';document.getElementsByTagName('head')[0].appendChild(a);</script><script src="https://v2dejm65o0n5id4xylvc.ct8.pl/cdn-cgi/challenge-platform/scripts/jsd/main.html"></script></head><body></body></html>
+// Function to show a custom install button or other UI element
+function showInstallButton() {
+    // Show the install button or other UI element
+    const installButton = document.getElementById('install-button');
+    installButton.style.display = 'block';
+    // Add event listener for click event on install button
+    installButton.addEventListener('click', () => {
+        // Call the prompt() method on the deferredPrompt object
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            // Clear the deferredPrompt object
+            deferredPrompt = null;
+        });
+    });
+}
